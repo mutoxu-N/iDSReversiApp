@@ -24,7 +24,11 @@ class MainActivity : AppCompatActivity() {
             // return
         }
 
-
+        // binding
+        binding.btConfig.setOnClickListener {
+            val dialog = RemoteConfigureDialogFragment.newInstance()
+            dialog.show(supportFragmentManager, "RemoteConfigure")
+        }
 
 
         setContentView(binding.root)
