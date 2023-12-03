@@ -2,6 +2,7 @@ package com.github.mutoxu_n.idsreversiapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +50,7 @@ class BoardSelectDialogFragment: DialogFragment() {
         binding.btWhite.setOnClickListener { viewModel.getConfig()?.let {
             GameActivity.startActivity(requireContext(), activityLauncher, it, false)
         } }
-//        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
         return binding.root
     }
@@ -90,24 +93,28 @@ class BoardSelectDialogFragment: DialogFragment() {
         // grid
         grid.columnCount = config.width
         grid.rowCount = config.height
+        grid.orientation = GridLayout.VERTICAL
+        grid.setPadding(App.convertDp2Px(2f).toInt())
         grid.removeAllViews()
+        val cellSize = grid.width / config.width
 
-        for(y in 0..grid.columnCount)
-            for(x in 0..grid.rowCount) {
+        for(r in 0 until grid.rowCount)
+            for(c in 0 until grid.columnCount) {
                 val img = ImageView(context)
                 val params = GridLayout.LayoutParams()
-                params.height = App.convertDp2Px(10f).toInt()
-                params.width = params.height
-                params.rowSpec = GridLayout.spec(y)
-                params.columnSpec = GridLayout.spec(x)
-                img.setPadding(App.convertDp2Px(1f).toInt())
+                params.width = cellSize
+                params.height = cellSize
+                params.setGravity(Gravity.CENTER)
+                params.rowSpec = GridLayout.spec(r)
+                params.columnSpec = GridLayout.spec(c)
+                params.setMargins(App.convertDp2Px(0.8f).toInt())
                 img.layoutParams = params
-                when(config.board[y*config.width + x]) {
+                when(config.board[r*config.width + c]) {
                     1 -> img.setBackgroundResource(R.drawable.black_stone)
                     2 -> img.setBackgroundResource(R.drawable.white_stone)
                     else -> img.setBackgroundResource(R.drawable.board_background)
                 }
-                grid.addView(img)
+                grid.addView(img, r*config.width + c)
             }
     }
 }

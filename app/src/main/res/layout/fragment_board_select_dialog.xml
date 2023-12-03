@@ -25,7 +25,9 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/tvName"
-        app:layout_constraintTop_toTopOf="@id/tvName"/>
+        app:layout_constraintTop_toTopOf="@id/tvName"
+
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btNext"
@@ -35,7 +37,9 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/tvName"
-        app:layout_constraintTop_toTopOf="@id/tvName"/>
+        app:layout_constraintTop_toTopOf="@id/tvName"
+
+        android:visibility="gone"/>
 
     <GridLayout
         android:id="@+id/gird"
@@ -45,9 +49,8 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="30dp"
         android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvName" />
 
     <Button
