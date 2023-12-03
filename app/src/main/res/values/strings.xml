@@ -3,4 +3,7 @@
     <string name="start">Start</string>
     <string name="config">Config</string>
     <string name="title">Reversi App from iDS</string>
+    <string name="address">Address</string>
+    <string name="port">Port</string>
+    <string name="done">Done</string>
 </resources>
