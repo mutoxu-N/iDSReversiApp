@@ -31,10 +31,9 @@ class BoardSelectDialogFragment: DialogFragment() {
 
         binding.btNext.setOnClickListener { viewModel.nextPage() }
         binding.btPrevious.setOnClickListener { viewModel.previousPage() }
+        binding.btDone.setOnClickListener { GameActivity.startActivity(requireContext(), activityLauncher) }
 
-        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            // TODO: GameActivityに遷移
-        }
+        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
         return binding.root
     }
