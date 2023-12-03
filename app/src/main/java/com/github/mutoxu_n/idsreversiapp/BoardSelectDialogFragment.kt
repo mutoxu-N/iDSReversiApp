@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
@@ -102,19 +103,18 @@ class BoardSelectDialogFragment: DialogFragment() {
             for(c in 0 until grid.columnCount) {
                 val img = ImageView(context)
                 val params = GridLayout.LayoutParams()
+                val idx = r*config.width + c
                 params.width = cellSize
                 params.height = cellSize
                 params.setGravity(Gravity.CENTER)
-                params.rowSpec = GridLayout.spec(r)
-                params.columnSpec = GridLayout.spec(c)
                 params.setMargins(App.convertDp2Px(0.8f).toInt())
                 img.layoutParams = params
-                when(config.board[r*config.width + c]) {
-                    1 -> img.setBackgroundResource(R.drawable.black_stone)
-                    2 -> img.setBackgroundResource(R.drawable.white_stone)
-                    else -> img.setBackgroundResource(R.drawable.board_background)
+                when(config.board[idx]) {
+                    1 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.black_stone))
+                    2 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.white_stone))
+                    else -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.board_background))
                 }
-                grid.addView(img, r*config.width + c)
+                grid.addView(img, idx)
             }
     }
 }

@@ -6,4 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <ImageView
+        android:id="@+id/ivStone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/black_stone"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="@id/display"
+        app:layout_constraintBottom_toBottomOf="@id/display"
+        app:layout_constraintEnd_toStartOf="@id/display"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintHorizontal_chainStyle="packed"/>
+
+    <TextView
+        android:id="@+id/display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivStone"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:text="@string/turn"
+        android:layout_marginTop="20dp"/>
+
+
+    <GridLayout
+        android:id="@+id/gird"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/display" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
