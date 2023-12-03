@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -25,15 +25,29 @@ class BoardSelectDialogFragment: DialogFragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        // 横幅設定
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.8).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+        )
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // binding
         binding = FragmentBoardSelectDialogBinding.inflate(inflater)
 
+        // buttons
         binding.btNext.setOnClickListener { viewModel.nextPage() }
         binding.btPrevious.setOnClickListener { viewModel.previousPage() }
-        binding.btDone.setOnClickListener { GameActivity.startActivity(requireContext(), activityLauncher) }
-
-        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+        binding.btBlack.setOnClickListener { viewModel.getConfig()?.let {
+                GameActivity.startActivity(requireContext(), activityLauncher, it, true)
+        } }
+        binding.btWhite.setOnClickListener { viewModel.getConfig()?.let {
+            GameActivity.startActivity(requireContext(), activityLauncher, it, false)
+        } }
+//        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
         return binding.root
     }
@@ -46,11 +60,34 @@ class BoardSelectDialogFragment: DialogFragment() {
         viewModel.page.observe(this) { repaint() }
     }
 
-    // 再描画
     private fun repaint() {
+        // repaint on moving
         val grid = binding.gird
-        val config = viewModel.getConfig() ?: return
+        val config = viewModel.getConfig()
+        if(config == null){
+            if(viewModel.failedCount < 5)
+                viewModel.syncConfig()
+            else {
+                Toast.makeText(context, "Config cannot be got from server.", Toast.LENGTH_SHORT).show()
+                dismiss()
+            }
+            return
+        }
 
+        // name
+        binding.tvName.text = config.name
+
+        // arrows
+        val size = viewModel.getConfigSize()
+        if(size == 1) {
+            binding.btNext.visibility = View.GONE
+            binding.btPrevious.visibility = View.GONE
+        } else {
+            binding.btNext.visibility = View.VISIBLE
+            binding.btPrevious.visibility = View.VISIBLE
+        }
+
+        // grid
         grid.columnCount = config.width
         grid.rowCount = config.height
         grid.removeAllViews()

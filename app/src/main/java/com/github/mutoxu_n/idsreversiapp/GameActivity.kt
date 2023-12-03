@@ -13,16 +13,37 @@ class GameActivity : AppCompatActivity() {
     private lateinit var viewModel: GameActivityViewModel
 
     companion object {
-        fun startActivity(context: Context, launcher: ActivityResultLauncher<Intent>) {
+        private const val PARAM_NAME = "name"
+        private const val PARAM_HEIGHT = "height"
+        private const val PARAM_WIDTH = "width"
+        private const val PARAM_INIT = "init"
+        private const val PARAM_IS_BLACK = "is_black"
+
+        fun startActivity(context: Context, launcher: ActivityResultLauncher<Intent>, config: ReversiConfig, isBlack: Boolean) {
             val intent = Intent(context, GameActivity::class.java)
+            intent.putExtra(PARAM_NAME, config.name)
+            intent.putExtra(PARAM_WIDTH, config.width)
+            intent.putExtra(PARAM_HEIGHT, config.height)
+            intent.putExtra(PARAM_INIT, config.board.toIntArray())
+            intent.putExtra(PARAM_IS_BLACK, isBlack)
             launcher.launch(intent)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // init
         binding = ActivityGameBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[GameActivityViewModel::class.java]
+
+        // get args
+        val conf = ReversiConfig(
+            intent.getStringExtra(PARAM_NAME)!!,
+            intent.getIntExtra(PARAM_HEIGHT, -1),
+            intent.getIntExtra(PARAM_WIDTH, -1),
+            intent.getIntArrayExtra(PARAM_INIT)!!.toList()
+        )
+        viewModel.init(conf, intent.getBooleanExtra(PARAM_IS_BLACK, true))
 
         setContentView(binding.root)
     }

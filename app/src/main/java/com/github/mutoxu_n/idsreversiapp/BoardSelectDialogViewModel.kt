@@ -23,17 +23,14 @@ class BoardSelectDialogViewModel: ViewModel() {
         syncConfig()
     }
 
-    data class ReversiConfig(
-        val name: String,
-        val height: Int,
-        val width: Int,
-        val board: List<Int>)
-
     private var _configs: MutableLiveData<List<ReversiConfig>> = MutableLiveData(null)
     val configs: LiveData<List<ReversiConfig>> get() = _configs
 
     private var _page: MutableLiveData<Int> = MutableLiveData(0)
     val page: LiveData<Int> get() = _page
+
+    private var _failedCount = 0
+    val failedCount get() = _failedCount
 
     fun syncConfig() {
         viewModelScope.launch {
@@ -49,7 +46,7 @@ class BoardSelectDialogViewModel: ViewModel() {
 
                     // 接続先で処理に異常があったら終了
                     if(con.responseCode != HttpURLConnection.HTTP_OK) {
-                        Log.e("APIAccess.kt modify()", "レスポンスコード: ${con.responseCode}")
+                        Log.e("BoardSelectDialog.kt syncConfig()", "レスポンスコード: ${con.responseCode}")
                     }
 
                     val str = con.inputStream.bufferedReader(Charsets.UTF_8).use {br ->
@@ -71,25 +68,28 @@ class BoardSelectDialogViewModel: ViewModel() {
 
                         // リストに追加
                         list.add(ReversiConfig(name, t.getInt("width"), t.getInt("height"), board))
+                        withContext(Dispatchers.Main) {
+                            _configs.value = list
+                            _failedCount = 0
+                        }
                     }
 
-                } catch (e: Exception) { e.printStackTrace() }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    _failedCount += 1
+                }
 
-            }
-            withContext(Dispatchers.Main) {
-                _configs.value = list
             }
         }
     }
 
     fun getConfig(): ReversiConfig? {
-        return try {
-            configs.value!![page.value!!]
+        return try { configs.value!![page.value!!] }
+               catch(e: Exception) { null }
+    }
 
-        } catch(e: Exception) {
-            e.printStackTrace()
-            null
-        }
+    fun getConfigSize(): Int {
+        return configs.value?.size ?: -1
     }
 
     fun nextPage() {
