@@ -68,4 +68,11 @@ class RemoteConfigureDialogFragment: DialogFragment() {
             binding.etPort.setText(pref.getInt(App.KEY_PORT, 443).toString())
         }
     }
+
+    override fun onDestroy() {
+        if(activity is MainActivity) {
+            (activity as MainActivity).onDialogClosed()
+        }
+        super.onDestroy()
+    }
 }

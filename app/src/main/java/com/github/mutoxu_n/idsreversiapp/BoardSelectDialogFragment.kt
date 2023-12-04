@@ -64,6 +64,13 @@ class BoardSelectDialogFragment: DialogFragment() {
         viewModel.page.observe(this) { repaint() }
     }
 
+    override fun onDestroy() {
+        if(activity is MainActivity) {
+            (activity as MainActivity).onDialogClosed()
+        }
+        super.onDestroy()
+    }
+
     private fun repaint() {
         // repaint on moving
         val grid = binding.grid

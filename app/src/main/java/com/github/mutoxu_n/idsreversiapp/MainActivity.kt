@@ -18,14 +18,24 @@ class MainActivity : AppCompatActivity() {
 
         // binding
         binding.btStart.setOnClickListener {
-            val dialog = BoardSelectDialogFragment.newInstance()
-            dialog.show(supportFragmentManager, "BoardSelect")
+            if(!viewModel.showingDialog) {
+                viewModel.setDialogShowing(true)
+                val dialog = BoardSelectDialogFragment.newInstance()
+                dialog.show(supportFragmentManager, "BoardSelect")
+            }
         }
         binding.btConfig.setOnClickListener {
-            val dialog = RemoteConfigureDialogFragment.newInstance()
-            dialog.show(supportFragmentManager, "RemoteConfigure")
+            if(!viewModel.showingDialog){
+                viewModel.setDialogShowing(true)
+                val dialog = RemoteConfigureDialogFragment.newInstance()
+                dialog.show(supportFragmentManager, "RemoteConfigure")
+            }
         }
 
         setContentView(binding.root)
+    }
+
+    fun onDialogClosed() {
+        viewModel.setDialogShowing(false)
     }
 }
