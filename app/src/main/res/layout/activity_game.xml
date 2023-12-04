@@ -36,6 +36,62 @@
         android:layout_marginStart="5dp"
         android:textSize="@dimen/textTitle"/>
 
+    <TextView
+        android:id="@+id/detailDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/turnDisplay"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/playerBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toEndOf="@id/ivBlackStone"
+        app:layout_constraintBottom_toTopOf="@id/grid"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/you" />
+
+    <ImageView
+        android:id="@+id/ivBlackStone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintStart_toStartOf="@id/grid"
+        app:layout_constraintTop_toTopOf="@id/playerBlack"
+        app:layout_constraintBottom_toBottomOf="@id/playerBlack"
+
+        app:layout_constraintDimensionRatio="1"
+        android:src="@drawable/black_stone_with_border"
+        android:importantForAccessibility="no" />
+
+    <TextView
+        android:id="@+id/playerWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toStartOf="@id/ivWhiteStone"
+        app:layout_constraintBottom_toTopOf="@id/grid"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="2dp"
+        android:text="@string/cpu" />
+
+    <ImageView
+        android:id="@+id/ivWhiteStone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintEnd_toEndOf="@id/grid"
+        app:layout_constraintTop_toTopOf="@id/playerWhite"
+        app:layout_constraintBottom_toBottomOf="@id/playerWhite"
+
+        app:layout_constraintDimensionRatio="1"
+        android:src="@drawable/white_stone_with_border"
+        android:importantForAccessibility="no" />
 
     <GridLayout
         android:id="@+id/grid"
@@ -43,8 +99,9 @@
         android:layout_height="wrap_content"
 
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:background="@color/black"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/turnDisplay" />

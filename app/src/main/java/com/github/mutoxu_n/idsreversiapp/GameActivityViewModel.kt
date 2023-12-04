@@ -48,6 +48,9 @@ class GameActivityViewModel: ViewModel() {
     private var _passed = false
     private var _connecting = false
 
+    private var _finished = false
+    val finished get() = _finished
+
     fun init(config: ReversiConfig, isBlack: Boolean) {
         _config.value = config
         _humanIsBlack = isBlack
@@ -168,8 +171,8 @@ class GameActivityViewModel: ViewModel() {
     }
 
     private fun whenGameFinished() {
+        _finished = true
         _turnIsBlack.value = turnIsBlack.value!!
-        Toast.makeText(App.app.applicationContext, "Game Finished!", Toast.LENGTH_SHORT).show()
     }
 
     private fun whenCannotPlace() {
@@ -229,6 +232,14 @@ class GameActivityViewModel: ViewModel() {
         return if(tx !in 0 until width
             || ty !in 0 until height
             || board[ty*width + tx] == 0) 0 else count
+    }
+
+    fun countStone(stone: Int): Int {
+        val board = board.value ?: return -1
+        var count = 0
+        for(s in board) if(s == stone) count++
+        Log.e("count", "$count, $board")
+        return count
     }
 
 }

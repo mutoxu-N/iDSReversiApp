@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -54,6 +55,16 @@ class GameActivity : AppCompatActivity() {
         // Viewのサイズが確定してから再描画
         binding.grid.post { repaint() }
 
+        // Player Name
+        if(viewModel.humanIsBlack) {
+            binding.playerBlack.text = getString(R.string.you)
+            binding.playerWhite.text = getString(R.string.cpu)
+
+        } else {
+            binding.playerBlack.text = getString(R.string.cpu)
+            binding.playerWhite.text = getString(R.string.you)
+        }
+
         viewModel.turnIsBlack.observe(this) { repaint() }
 
         setContentView(binding.root)
@@ -66,10 +77,19 @@ class GameActivity : AppCompatActivity() {
         val config = viewModel.config.value ?: return
 
         // turn
-        if(viewModel.turnIsBlack.value!!)
-            binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone_with_border))
-        else
-            binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_border))
+        if(viewModel.finished) {
+            binding.ivStone.visibility = View.GONE
+            binding.turnDisplay.text = getString(R.string.game_finished)
+            binding.detailDisplay.visibility = View.VISIBLE
+            binding.detailDisplay.text =
+                getString(R.string.result_stone, viewModel.countStone(1), viewModel.countStone(2))
+
+        } else {
+            if(viewModel.turnIsBlack.value!!)
+                binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone_with_border))
+            else
+                binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_border))
+        }
 
         // grid
         grid.columnCount = config.width
@@ -96,10 +116,9 @@ class GameActivity : AppCompatActivity() {
                     2 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_board))
                     else -> {
                         img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.board_background))
-                        if(viewModel.humanIsBlack == viewModel.turnIsBlack.value!!) {
+                        if(viewModel.humanIsBlack == viewModel.turnIsBlack.value!!)
                             img.setOnClickListener { viewModel.put(c, r) }
-//                            img.setOnClickListener { viewModel.putCPU() }
-                        }
+
                     }
                 }
                 grid.addView(img, idx)

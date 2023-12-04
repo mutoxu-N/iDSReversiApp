@@ -10,4 +10,8 @@
     <string name="black">Black</string>
     <string name="white">White</string>
     <string name="turn">\'s Turn</string>
+    <string name="you">YOU</string>
+    <string name="cpu">CPU</string>
+    <string name="game_finished">Game Finished!</string>
+    <string name="result_stone">Black: %1$d, White: %2$d</string>
 </resources>
