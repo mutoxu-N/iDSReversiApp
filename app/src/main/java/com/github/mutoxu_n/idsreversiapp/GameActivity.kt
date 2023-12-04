@@ -3,14 +3,12 @@ package com.github.mutoxu_n.idsreversiapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.doOnLayout
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
@@ -56,9 +54,7 @@ class GameActivity : AppCompatActivity() {
         // Viewのサイズが確定してから再描画
         binding.grid.post { repaint() }
 
-        viewModel.turnIsBlack.observe(this) {
-            repaint()
-        }
+        viewModel.turnIsBlack.observe(this) { repaint() }
 
         setContentView(binding.root)
     }
@@ -71,9 +67,9 @@ class GameActivity : AppCompatActivity() {
 
         // turn
         if(viewModel.turnIsBlack.value!!)
-            binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone))
+            binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone_with_border))
         else
-            binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone))
+            binding.ivStone.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_border))
 
         // grid
         grid.columnCount = config.width
@@ -100,9 +96,10 @@ class GameActivity : AppCompatActivity() {
                     2 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_board))
                     else -> {
                         img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.board_background))
-//                        if(viewModel.humanIsBlack == viewModel.turnIsBlack.value!!) {
+                        if(viewModel.humanIsBlack == viewModel.turnIsBlack.value!!) {
                             img.setOnClickListener { viewModel.put(c, r) }
-//                        }
+//                            img.setOnClickListener { viewModel.putCPU() }
+                        }
                     }
                 }
                 grid.addView(img, idx)

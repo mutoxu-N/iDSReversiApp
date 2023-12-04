@@ -5,9 +5,22 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class GameActivityViewModel: ViewModel() {
     companion object {
+        private const val CONNECT_TIMEOUT = 3_000
+        private const val READ_TIMEOUT = 10_000
+
         private val DIRS = listOf(
             listOf(1, 0),
             listOf(1, 1),
@@ -33,11 +46,13 @@ class GameActivityViewModel: ViewModel() {
     val turnIsBlack: LiveData<Boolean> get() = _turnIsBlack
 
     private var _passed = false
+    private var _connecting = false
 
     fun init(config: ReversiConfig, isBlack: Boolean) {
         _config.value = config
         _humanIsBlack = isBlack
         _board.value = config.board
+        if(!isBlack) putCPU()
         Log.e("GameActivityViewModel", "${config.name}, ${config.width}x${config.height}\n${config.board}\nisBlack=$isBlack")
     }
 
@@ -64,7 +79,6 @@ class GameActivityViewModel: ViewModel() {
         if(putFlag){
             // update board and turn change
             _board.value = newBoard
-            _turnIsBlack.value = !_turnIsBlack.value!!
             _passed = false
 
             // check finish
@@ -75,32 +89,104 @@ class GameActivityViewModel: ViewModel() {
                     finishFlag = false
                     break
                 }
+
             if(finishFlag) {
-                gameFinished()
+                whenGameFinished()
                 return
             }
-
+            changeTurn()
 
         } else {
-            // おけなかったとき
-            if(!isCanPlace()) {
-                // パス
-                if(_passed) {
-                    gameFinished()
-                    return
-                }
-                _passed = true
-                _turnIsBlack.value = !_turnIsBlack.value!!
-                Toast.makeText(App.app.applicationContext, "Pass!", Toast.LENGTH_SHORT).show()
+            whenCannotPlace()
+        }
+    }
 
-            } else {
-                Toast.makeText(App.app.applicationContext, "Cannot place there!", Toast.LENGTH_SHORT).show()
+    fun putCPU() {
+        if(_connecting) return
+        _connecting = true
+        viewModelScope.launch {
+            val name = _config.value!!.name
+            val board = _board.value!!
+            val width = _config.value!!.width
+            val size = _config.value!!.height * width
+            val stone = if(turnIsBlack.value!!) 1 else 2
+
+            withContext(Dispatchers.IO) {
+                try {
+                    // prepare data
+                    val json = JSONObject()
+                    json.put("name", name)
+                    json.put("board", JSONArray(board))
+                    json.put("stone", stone)
+                    Log.e("json:", json.toString())
+                    val data = json.toString().toByteArray()
+
+
+                    // connect
+                    val url = URL(App.getRootAddress() + "predict")
+                    val con = url.openConnection() as HttpURLConnection
+                    con.connectTimeout = CONNECT_TIMEOUT
+                    con.readTimeout = READ_TIMEOUT
+                    con.requestMethod = "POST"
+                    con.setFixedLengthStreamingMode(data.size)
+                    con.setRequestProperty("Content-Type", "application/json")
+
+                    val oStream = con.outputStream
+                    oStream.write(data)
+                    oStream.flush()
+                    oStream.close()
+
+                    val statusCode = con.responseCode
+                    if (statusCode == HttpURLConnection.HTTP_OK) {
+                        val br = BufferedReader(InputStreamReader(con.inputStream))
+                        val res = br.use { it.readText() }
+                        br.close()
+
+                        val resJson = JSONObject(res)
+                        withContext(Dispatchers.Main) {
+                            val idx = resJson.getInt("action")
+                            Log.e("GameActivityViewModel", "$idx")
+                            if(idx == size) whenCannotPlace()
+                            else put(idx%width, idx/width)
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    _connecting = false
+                }
             }
         }
     }
 
-    private fun gameFinished() {
+    private fun changeTurn() {
+        val newTurnIsBlack = !_turnIsBlack.value!!
+        _turnIsBlack.value = newTurnIsBlack
+        if(newTurnIsBlack == !_humanIsBlack)
+            putCPU()
+    }
+
+    private fun whenGameFinished() {
+        _turnIsBlack.value = turnIsBlack.value!!
         Toast.makeText(App.app.applicationContext, "Game Finished!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun whenCannotPlace() {
+        // おけなかったとき
+        if(!isCanPlace()) {
+            // パス
+            if(_passed) {
+                whenGameFinished()
+                return
+            }
+            _passed = true
+            changeTurn()
+            Toast.makeText(App.app.applicationContext, "Pass!", Toast.LENGTH_SHORT).show()
+
+        } else {
+            Toast.makeText(App.app.applicationContext, "Cannot place there!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun isCanPlace(): Boolean {
