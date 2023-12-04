@@ -100,7 +100,9 @@ class GameActivity : AppCompatActivity() {
                     2 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_board))
                     else -> {
                         img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.board_background))
-                        img.setOnClickListener { viewModel.put(c, r) }
+//                        if(viewModel.humanIsBlack == viewModel.turnIsBlack.value!!) {
+                            img.setOnClickListener { viewModel.put(c, r) }
+//                        }
                     }
                 }
                 grid.addView(img, idx)
