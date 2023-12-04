@@ -92,11 +92,11 @@ class BoardSelectDialogFragment: DialogFragment() {
         }
 
         // grid
-        grid.columnCount = config.width
+        grid.removeAllViews()
         grid.rowCount = config.height
+        grid.columnCount = config.width
         grid.orientation = GridLayout.VERTICAL
         grid.setPadding(App.convertDp2Px(2f).toInt())
-        grid.removeAllViews()
         val cellSize = grid.width / config.width
 
         for(r in 0 until grid.rowCount)
