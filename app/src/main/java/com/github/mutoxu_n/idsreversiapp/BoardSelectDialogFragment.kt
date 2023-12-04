@@ -59,7 +59,6 @@ class BoardSelectDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // view model
         viewModel = ViewModelProvider(this)[BoardSelectDialogViewModel::class.java]
-
         viewModel.configs.observe(this) { repaint() }
         viewModel.page.observe(this) { repaint() }
     }

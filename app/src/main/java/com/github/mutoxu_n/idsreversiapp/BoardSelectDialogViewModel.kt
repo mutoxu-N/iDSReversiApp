@@ -32,7 +32,12 @@ class BoardSelectDialogViewModel: ViewModel() {
     private var _failedCount = 0
     val failedCount get() = _failedCount
 
+    private var _connecting = false
+
     fun syncConfig() {
+        if(_connecting) return
+        _connecting = true
+
         viewModelScope.launch {
             val list = mutableListOf<ReversiConfig>()
             withContext(Dispatchers.IO) {
@@ -77,6 +82,9 @@ class BoardSelectDialogViewModel: ViewModel() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     _failedCount += 1
+
+                } finally {
+                    _connecting = false
                 }
 
             }
