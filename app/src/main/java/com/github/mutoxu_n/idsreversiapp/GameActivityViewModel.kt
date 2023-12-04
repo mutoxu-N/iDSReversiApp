@@ -1,6 +1,5 @@
 package com.github.mutoxu_n.idsreversiapp
 
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -56,7 +55,6 @@ class GameActivityViewModel: ViewModel() {
         _humanIsBlack = isBlack
         _board.value = config.board
         if(!isBlack) putCPU()
-        Log.e("GameActivityViewModel", "${config.name}, ${config.width}x${config.height}\n${config.board}\nisBlack=$isBlack")
     }
 
     fun put(x: Int, y: Int) {
@@ -121,7 +119,6 @@ class GameActivityViewModel: ViewModel() {
                     json.put("name", name)
                     json.put("board", JSONArray(board))
                     json.put("stone", stone)
-                    Log.e("json:", json.toString())
                     val data = json.toString().toByteArray()
 
 
@@ -148,7 +145,6 @@ class GameActivityViewModel: ViewModel() {
                         val resJson = JSONObject(res)
                         withContext(Dispatchers.Main) {
                             val idx = resJson.getInt("action")
-                            Log.e("GameActivityViewModel", "$idx")
                             if(idx == size) whenCannotPlace()
                             else put(idx%width, idx/width)
                         }
@@ -199,10 +195,8 @@ class GameActivityViewModel: ViewModel() {
 
         for(idx in 0 until size)
             for(dir in DIRS)
-                if(getReverseCount(idx%width, idx/width, dir) > 0){
-                    Log.e("GAVM", "$idx")
+                if(getReverseCount(idx%width, idx/width, dir) > 0)
                     return true
-                }
 
         return false
     }
@@ -238,7 +232,6 @@ class GameActivityViewModel: ViewModel() {
         val board = board.value ?: return -1
         var count = 0
         for(s in board) if(s == stone) count++
-        Log.e("count", "$count, $board")
         return count
     }
 

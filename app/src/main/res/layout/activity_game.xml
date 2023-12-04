@@ -1,109 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".GameActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/ivStone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:src="@drawable/black_stone"
-        app:layout_constraintDimensionRatio="1"
-        android:importantForAccessibility="no"
-        app:layout_constraintTop_toTopOf="@id/turnDisplay"
-        app:layout_constraintBottom_toBottomOf="@id/turnDisplay"
-        app:layout_constraintEnd_toStartOf="@id/turnDisplay"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="2dp"
-
-        app:layout_constraintHorizontal_chainStyle="packed"/>
-
-    <TextView
-        android:id="@+id/turnDisplay"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ivStone"
-        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".GameActivity">
 
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:text="@string/turn"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="5dp"
-        android:textSize="@dimen/textTitle"/>
+        <ImageView
+            android:id="@+id/ivStone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
 
-    <TextView
-        android:id="@+id/detailDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/turnDisplay"
-        android:visibility="gone"/>
+            android:src="@drawable/black_stone"
+            app:layout_constraintDimensionRatio="1"
+            android:importantForAccessibility="no"
+            app:layout_constraintTop_toTopOf="@id/turnDisplay"
+            app:layout_constraintBottom_toBottomOf="@id/turnDisplay"
+            app:layout_constraintEnd_toStartOf="@id/turnDisplay"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="2dp"
 
-    <TextView
-        android:id="@+id/playerBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_chainStyle="packed"/>
 
-        app:layout_constraintStart_toEndOf="@id/ivBlackStone"
-        app:layout_constraintBottom_toTopOf="@id/grid"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginBottom="2dp"
-        android:text="@string/you" />
+        <TextView
+            android:id="@+id/turnDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivStone"
+            app:layout_constraintTop_toTopOf="parent"
 
-    <ImageView
-        android:id="@+id/ivBlackStone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:text="@string/turn"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="5dp"
+            android:textSize="@dimen/textTitle"/>
 
-        app:layout_constraintStart_toStartOf="@id/grid"
-        app:layout_constraintTop_toTopOf="@id/playerBlack"
-        app:layout_constraintBottom_toBottomOf="@id/playerBlack"
+        <TextView
+            android:id="@+id/detailDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/turnDisplay"
+            android:visibility="gone"/>
 
-        app:layout_constraintDimensionRatio="1"
-        android:src="@drawable/black_stone_with_border"
-        android:importantForAccessibility="no" />
+        <TextView
+            android:id="@+id/playerBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/playerWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/ivBlackStone"
+            app:layout_constraintBottom_toTopOf="@id/grid"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="2dp"
+            android:text="@string/you" />
 
-        app:layout_constraintEnd_toStartOf="@id/ivWhiteStone"
-        app:layout_constraintBottom_toTopOf="@id/grid"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginBottom="2dp"
-        android:text="@string/cpu" />
+        <ImageView
+            android:id="@+id/ivBlackStone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
 
-    <ImageView
-        android:id="@+id/ivWhiteStone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@id/grid"
+            app:layout_constraintTop_toTopOf="@id/playerBlack"
+            app:layout_constraintBottom_toBottomOf="@id/playerBlack"
 
-        app:layout_constraintEnd_toEndOf="@id/grid"
-        app:layout_constraintTop_toTopOf="@id/playerWhite"
-        app:layout_constraintBottom_toBottomOf="@id/playerWhite"
+            app:layout_constraintDimensionRatio="1"
+            android:src="@drawable/black_stone_with_border"
+            android:importantForAccessibility="no" />
 
-        app:layout_constraintDimensionRatio="1"
-        android:src="@drawable/white_stone_with_border"
-        android:importantForAccessibility="no" />
+        <TextView
+            android:id="@+id/playerWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <GridLayout
-        android:id="@+id/grid"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/ivWhiteStone"
+            app:layout_constraintBottom_toTopOf="@id/grid"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="2dp"
+            android:text="@string/cpu" />
 
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="50dp"
-        android:background="@color/black"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/turnDisplay" />
+        <ImageView
+            android:id="@+id/ivWhiteStone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintEnd_toEndOf="@id/grid"
+            app:layout_constraintTop_toTopOf="@id/playerWhite"
+            app:layout_constraintBottom_toBottomOf="@id/playerWhite"
+
+            app:layout_constraintDimensionRatio="1"
+            android:src="@drawable/white_stone_with_border"
+            android:importantForAccessibility="no" />
+
+        <GridLayout
+            android:id="@+id/grid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/black"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/turnDisplay" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
