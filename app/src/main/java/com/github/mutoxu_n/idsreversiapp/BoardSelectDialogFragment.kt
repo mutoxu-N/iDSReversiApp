@@ -51,6 +51,7 @@ class BoardSelectDialogFragment: DialogFragment() {
         binding.btWhite.setOnClickListener { viewModel.getConfig()?.let {
             GameActivity.startActivity(requireContext(), activityLauncher, it, false)
         } }
+        binding.grid.post { repaint() }
         activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
         return binding.root
