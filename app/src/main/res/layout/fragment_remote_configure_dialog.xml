@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/tvAddress"
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="@id/glTextView"
-        app:layout_constraintTop_toTopOf="@id/glAddress"
+        app:layout_constraintBaseline_toBaselineOf="@id/etAddress"
 
         android:text="@string/address" />
 
@@ -20,10 +21,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
+        android:minWidth="100dp"
 
         app:layout_constraintStart_toStartOf="@id/glEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvAddress"
+        app:layout_constraintTop_toTopOf="parent"
 
         android:selectAllOnFocus="true"
         android:inputType="text"
@@ -36,7 +38,7 @@
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="@id/glTextView"
-        app:layout_constraintTop_toTopOf="@id/glPort"
+        app:layout_constraintBaseline_toBaselineOf="@id/etPort"
 
         android:text="@string/port" />
 
@@ -45,10 +47,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
+        android:minWidth="100dp"
 
         app:layout_constraintStart_toStartOf="@id/glEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvPort"
+        app:layout_constraintTop_toBottomOf="@id/etAddress"
+        android:layout_marginTop="5dp"
 
         android:selectAllOnFocus="true"
         android:inputType="numberDecimal"
@@ -60,10 +64,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toTopOf="@id/glDone"
+        app:layout_constraintTop_toBottomOf="@id/etPort"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
+        android:layout_marginTop="8dp"
         android:text="@string/done" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -79,27 +83,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="100dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glPort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="70dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="120dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

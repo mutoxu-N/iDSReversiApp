@@ -20,7 +20,6 @@ class RemoteConfigureDialogFragment: DialogFragment() {
         fun newInstance(): RemoteConfigureDialogFragment {
             return RemoteConfigureDialogFragment()
         }
-
     }
 
     override fun onStart() {
@@ -46,7 +45,7 @@ class RemoteConfigureDialogFragment: DialogFragment() {
 
 
         binding.done.setOnClickListener {
-            Toast.makeText(context, "${viewModel.address.value}, ${viewModel.port.value}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${viewModel.address.value}:${viewModel.port.value}", Toast.LENGTH_SHORT).show()
             val editor = App.pref.edit()
             editor.putString(App.KEY_ADDRESS, viewModel.address.value)
             editor.putInt(App.KEY_PORT, viewModel.port.value!!)
