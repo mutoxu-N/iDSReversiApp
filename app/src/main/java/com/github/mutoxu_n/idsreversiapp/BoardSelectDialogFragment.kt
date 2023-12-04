@@ -66,7 +66,7 @@ class BoardSelectDialogFragment: DialogFragment() {
 
     private fun repaint() {
         // repaint on moving
-        val grid = binding.gird
+        val grid = binding.grid
         val config = viewModel.getConfig()
         if(config == null){
             if(viewModel.failedCount < 5)
@@ -110,8 +110,8 @@ class BoardSelectDialogFragment: DialogFragment() {
                 params.setMargins(App.convertDp2Px(0.8f).toInt())
                 img.layoutParams = params
                 when(config.board[idx]) {
-                    1 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.black_stone))
-                    2 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.white_stone))
+                    1 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.black_stone_with_board))
+                    2 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.white_stone_with_board))
                     else -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.board_background))
                 }
                 grid.addView(img, idx)

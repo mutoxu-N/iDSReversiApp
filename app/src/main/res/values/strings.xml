@@ -9,5 +9,5 @@
     <string name="test">test</string>
     <string name="black">Black</string>
     <string name="white">White</string>
-    <string name="turn">Turn</string>
+    <string name="turn">\'s Turn</string>
 </resources>

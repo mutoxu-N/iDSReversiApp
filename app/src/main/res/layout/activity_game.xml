@@ -8,15 +8,17 @@
 
     <ImageView
         android:id="@+id/ivStone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
 
-        android:background="@drawable/black_stone"
+        android:src="@drawable/black_stone"
+        app:layout_constraintDimensionRatio="1"
         android:importantForAccessibility="no"
         app:layout_constraintTop_toTopOf="@id/display"
         app:layout_constraintBottom_toBottomOf="@id/display"
         app:layout_constraintEnd_toStartOf="@id/display"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="2dp"
 
         app:layout_constraintHorizontal_chainStyle="packed"/>
 
@@ -30,11 +32,12 @@
 
         app:layout_constraintHorizontal_chainStyle="packed"
         android:text="@string/turn"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="50dp"
+        android:textSize="@dimen/textTitle"/>
 
 
     <GridLayout
-        android:id="@+id/gird"
+        android:id="@+id/grid"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 

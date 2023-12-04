@@ -3,12 +3,14 @@ package com.github.mutoxu_n.idsreversiapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
@@ -51,6 +53,9 @@ class GameActivity : AppCompatActivity() {
         )
         viewModel.init(conf, intent.getBooleanExtra(PARAM_IS_BLACK, true))
 
+        // Viewのサイズが確定してから再描画
+        binding.grid.post { repaint() }
+
         viewModel.turnIsBlack.observe(this) {
             repaint()
         }
@@ -58,9 +63,10 @@ class GameActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+
     private fun repaint() {
         // repaint on moving
-        val grid = binding.gird
+        val grid = binding.grid
         val config = viewModel.config.value ?: return
 
         // turn
@@ -90,8 +96,8 @@ class GameActivity : AppCompatActivity() {
                 params.setMargins(App.convertDp2Px(0.8f).toInt())
                 img.layoutParams = params
                 when(viewModel.board.value!![idx]) {
-                    1 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone))
-                    2 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone))
+                    1 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone_with_board))
+                    2 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_board))
                     else -> {
                         img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.board_background))
                         img.setOnClickListener { viewModel.put(c, r) }

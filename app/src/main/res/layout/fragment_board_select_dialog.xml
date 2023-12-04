@@ -42,7 +42,7 @@
         android:visibility="gone"/>
 
     <GridLayout
-        android:id="@+id/gird"
+        android:id="@+id/grid"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -65,7 +65,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gird" />
+        app:layout_constraintTop_toBottomOf="@id/grid" />
 
 
     <Button
