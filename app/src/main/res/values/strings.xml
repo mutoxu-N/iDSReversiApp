@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">iDSReversiApp</string>
+    <string name="app_name" translatable="false">iDSReversiApp</string>
     <string name="start">Start</string>
-    <string name="config">Config</string>
+    <string name="config">Server Config</string>
     <string name="title">Reversi App from iDS</string>
     <string name="address">Address</string>
     <string name="port">Port</string>
     <string name="done">Done</string>
     <string name="test">test</string>
-    <string name="black">Black</string>
-    <string name="white">White</string>
+    <string name="black_start">Black</string>
+    <string name="white_start">White</string>
     <string name="turn">\'s Turn</string>
-    <string name="you">YOU</string>
-    <string name="cpu">CPU</string>
+    <string name="you" translatable="false">YOU</string>
+    <string name="cpu" translatable="false">CPU</string>
     <string name="game_finished">Game Finished!</string>
     <string name="result_stone">Black: %1$d, White: %2$d</string>
 </resources>

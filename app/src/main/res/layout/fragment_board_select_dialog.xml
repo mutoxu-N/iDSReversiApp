@@ -64,7 +64,7 @@
 
         android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="5dp"
-        android:text="@string/black"
+        android:text="@string/black_start"
         app:layout_constraintEnd_toStartOf="@id/btWhite"
         app:layout_constraintHorizontal_chainStyle="packed"
 
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginHorizontal="5dp"
-        android:text="@string/white"
+        android:text="@string/white_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btBlack"
         app:layout_constraintTop_toTopOf="@id/btBlack"

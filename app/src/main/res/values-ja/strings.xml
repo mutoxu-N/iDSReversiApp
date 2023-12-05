@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start">スタート</string>
+    <string name="config">サーバー設定</string>
+    <string name="title">iDSアプリ班 リバーシ</string>
+    <string name="address">アドレス</string>
+    <string name="port">ポート</string>
+    <string name="done">完了</string>
+    <string name="test">テスト</string>
+    <string name="black_start">黒で始める</string>
+    <string name="white_start">白で始める</string>
+    <string name="turn">のターン</string>
+    <string name="game_finished">ゲーム終了</string>
+    <string name="result_stone">黒: %1$d, 白: %2$d</string>
+</resources>
