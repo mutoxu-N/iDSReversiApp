@@ -51,10 +51,12 @@ class GameActivityViewModel: ViewModel() {
     val finished get() = _finished
 
     fun init(config: ReversiConfig, isBlack: Boolean) {
-        _config.value = config
-        _humanIsBlack = isBlack
-        _board.value = config.board
-        if(!isBlack) putCPU()
+        if(_config.value == null) {
+            _config.value = config
+            _humanIsBlack = isBlack
+            _board.value = config.board
+            if(!isBlack) putCPU()
+        }
     }
 
     fun put(x: Int, y: Int) {
