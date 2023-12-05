@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IDSReversiApp</string>
+    <string name="app_name">iDSReversiApp</string>
     <string name="start">Start</string>
     <string name="config">Config</string>
     <string name="title">Reversi App from iDS</string>
