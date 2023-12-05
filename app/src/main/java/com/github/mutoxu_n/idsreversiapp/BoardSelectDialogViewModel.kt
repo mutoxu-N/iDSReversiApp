@@ -113,6 +113,6 @@ class BoardSelectDialogViewModel: ViewModel() {
         val configs = configs.value
         if(now == null || configs == null) return
 
-        _page.value = (now - 1) % configs.size
+        _page.value = (now + configs.size - 1) % configs.size
     }
 }

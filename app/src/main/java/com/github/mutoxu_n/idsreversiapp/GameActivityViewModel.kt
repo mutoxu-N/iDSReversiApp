@@ -102,7 +102,13 @@ class GameActivityViewModel: ViewModel() {
         }
     }
 
-    fun putCPU() {
+    private fun putCPU() {
+        // おけないとき
+        if(!isCanPlace()){
+            whenCannotPlace()
+            return
+        }
+
         if(_connecting) return
         _connecting = true
         viewModelScope.launch {
