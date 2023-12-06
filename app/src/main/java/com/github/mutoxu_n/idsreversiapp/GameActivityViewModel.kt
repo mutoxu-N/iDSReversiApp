@@ -189,10 +189,12 @@ class GameActivityViewModel: ViewModel() {
             }
             _passed = true
             changeTurn()
-            Toast.makeText(App.app.applicationContext, "Pass!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(App.app.applicationContext,
+                App.app.applicationContext.getString(R.string.pass), Toast.LENGTH_SHORT).show()
 
         } else {
-            Toast.makeText(App.app.applicationContext, "Cannot place there!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(App.app.applicationContext,
+                App.app.applicationContext.getString(R.string.cannot_place_there), Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -12,4 +12,6 @@
     <string name="turn">のターン</string>
     <string name="game_finished">ゲーム終了</string>
     <string name="result_stone">黒: %1$d, 白: %2$d</string>
+    <string name="pass">パス!</string>
+    <string name="cannot_place_there">その場所には置けません!</string>
 </resources>

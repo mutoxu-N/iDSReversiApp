@@ -14,4 +14,6 @@
     <string name="cpu" translatable="false">CPU</string>
     <string name="game_finished">Game Finished!</string>
     <string name="result_stone">Black: %1$d, White: %2$d</string>
+    <string name="pass">Pass!</string>
+    <string name="cannot_place_there">Cannot place there!</string>
 </resources>
