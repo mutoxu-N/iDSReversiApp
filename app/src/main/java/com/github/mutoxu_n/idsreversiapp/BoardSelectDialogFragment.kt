@@ -2,7 +2,6 @@ package com.github.mutoxu_n.idsreversiapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
@@ -103,25 +103,23 @@ class BoardSelectDialogFragment: DialogFragment() {
         grid.rowCount = config.height
         grid.columnCount = config.width
         grid.orientation = GridLayout.VERTICAL
+        (grid.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "${config.width.toFloat() / config.height}"
         grid.setPadding(App.convertDp2Px(2f).toInt())
-        val cellSize = grid.width / config.width
 
         for(r in 0 until grid.rowCount)
             for(c in 0 until grid.columnCount) {
                 val img = ImageView(context)
                 val params = GridLayout.LayoutParams()
-                val idx = r*config.width + c
-                params.width = cellSize
-                params.height = cellSize
-                params.setGravity(Gravity.CENTER)
+                params.columnSpec = GridLayout.spec(c, 1f)
+                params.rowSpec = GridLayout.spec(r, 1f)
                 params.setMargins(App.convertDp2Px(0.8f).toInt())
                 img.layoutParams = params
-                when(config.board[idx]) {
+                when(config.board[r*config.width + c]) {
                     1 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.black_stone_with_board))
                     2 -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.white_stone_with_board))
                     else -> img.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.board_background))
                 }
-                grid.addView(img, idx)
+                grid.addView(img)
             }
     }
 }

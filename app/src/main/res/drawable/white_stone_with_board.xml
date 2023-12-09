@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/board_background" />
-    <item>
+    <item
+        android:top="@dimen/stone_padding"
+        android:left="@dimen/stone_padding"
+        android:bottom="@dimen/stone_padding"
+        android:right="@dimen/stone_padding">
         <shape
             android:shape="oval">
             <solid android:color="@color/white"/>

@@ -3,12 +3,12 @@ package com.github.mutoxu_n.idsreversiapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
@@ -92,26 +92,22 @@ class GameActivity : AppCompatActivity() {
         }
 
         // grid
-        grid.columnCount = config.width
-        grid.rowCount = config.height
-        grid.orientation = GridLayout.VERTICAL
-        grid.setPadding(App.convertDp2Px(2f).toInt())
         grid.removeAllViews()
-        val cellSize = grid.width / config.width
+        grid.rowCount = config.height
+        grid.columnCount = config.width
+        grid.orientation = GridLayout.VERTICAL
+        (grid.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "${config.width.toFloat() / config.height}"
+        grid.setPadding(App.convertDp2Px(2f).toInt())
 
         for(r in 0 until grid.rowCount)
             for(c in 0 until grid.columnCount) {
                 val img = ImageView(applicationContext)
                 val params = GridLayout.LayoutParams()
-                val idx = r*config.width + c
-                params.width = cellSize
-                params.height = cellSize
-                params.setGravity(Gravity.CENTER)
-                params.rowSpec = GridLayout.spec(r)
-                params.columnSpec = GridLayout.spec(c)
+                params.columnSpec = GridLayout.spec(c, 1f)
+                params.rowSpec = GridLayout.spec(r, 1f)
                 params.setMargins(App.convertDp2Px(0.8f).toInt())
                 img.layoutParams = params
-                when(viewModel.board.value!![idx]) {
+                when(viewModel.board.value!![r*config.width + c]) {
                     1 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.black_stone_with_board))
                     2 -> img.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.white_stone_with_board))
                     else -> {
@@ -121,7 +117,7 @@ class GameActivity : AppCompatActivity() {
 
                     }
                 }
-                grid.addView(img, idx)
+                grid.addView(img)
             }
     }
 }
