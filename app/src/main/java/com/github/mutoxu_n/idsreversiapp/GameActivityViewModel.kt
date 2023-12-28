@@ -158,6 +158,9 @@ class GameActivityViewModel : ViewModel() {
                         val resJson = JSONObject(res)
                         withContext(Dispatchers.Main) {
                             val idx = resJson.getInt("action")
+                            val context = App.app.applicationContext
+                            Toast.makeText(context,
+                                context.resources.getString(R.string.cpu_puts_at, idx%width+1, idx/width+1), Toast.LENGTH_SHORT).show()
 
                             if (idx == size) whenCannotPlace()
                             else put(idx % width, idx / width)
