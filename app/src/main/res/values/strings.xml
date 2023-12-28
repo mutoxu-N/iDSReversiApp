@@ -16,4 +16,9 @@
     <string name="result_stone">Black: %1$d, White: %2$d</string>
     <string name="pass">Pass!</string>
     <string name="cannot_place_there">Cannot place there!</string>
+    <string name="connection_failed">Connection Failed!</string>
+    <string name="question_reconnect">Do you want to retry?</string>
+    <string name="yes">YES</string>
+    <string name="finish">Finish</string>
+    <string name="cpu_puts_at">CPU puts at %1$d</string>
 </resources>

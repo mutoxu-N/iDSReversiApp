@@ -19,24 +19,21 @@ class BoardSelectDialogViewModel: ViewModel() {
         private const val READ_TIMEOUT = 10_000
     }
 
-    init {
-        syncConfig()
-    }
-
     private var _configs: MutableLiveData<List<ReversiConfig>> = MutableLiveData(null)
     val configs: LiveData<List<ReversiConfig>> get() = _configs
 
     private var _page: MutableLiveData<Int> = MutableLiveData(0)
     val page: LiveData<Int> get() = _page
 
-    private var _failedCount = 0
-    val failedCount get() = _failedCount
-
     private var _connecting = false
+
+    private var _dialogFlag: MutableLiveData<Boolean> = MutableLiveData(false)
+    val dialogFlag: LiveData<Boolean> get() = _dialogFlag
 
     fun syncConfig() {
         if(_connecting) return
         _connecting = true
+        _dialogFlag.value = false
 
         viewModelScope.launch {
             val list = mutableListOf<ReversiConfig>()
@@ -75,13 +72,13 @@ class BoardSelectDialogViewModel: ViewModel() {
                         list.add(ReversiConfig(name, t.getInt("width"), t.getInt("height"), board))
                         withContext(Dispatchers.Main) {
                             _configs.value = list
-                            _failedCount = 0
                         }
                     }
 
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    _failedCount += 1
+                    withContext(Dispatchers.Main) {
+                        _dialogFlag.value = true
+                    }
 
                 } finally {
                     _connecting = false

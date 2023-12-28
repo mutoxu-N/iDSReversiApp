@@ -1,8 +1,11 @@
 package com.github.mutoxu_n.idsreversiapp
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -66,6 +69,19 @@ class GameActivity : AppCompatActivity() {
         }
 
         viewModel.turnIsBlack.observe(this) { repaint() }
+        viewModel.dialogFlag.observe(this) { it?.let {
+            if(it) {
+                AlertDialog.Builder(this@GameActivity)
+                    .setTitle(resources.getString(R.string.connection_failed))
+                    .setMessage(resources.getString(R.string.question_reconnect))
+                    .setPositiveButton(resources.getString(R.string.yes)) { _: DialogInterface, _: Int ->
+                        viewModel.putCPU() }
+                    .setNegativeButton(resources.getString(R.string.finish)) {
+                        _: DialogInterface, _: Int -> finish()
+                    }
+                    .show()
+            }
+        }}
 
         setContentView(binding.root)
     }

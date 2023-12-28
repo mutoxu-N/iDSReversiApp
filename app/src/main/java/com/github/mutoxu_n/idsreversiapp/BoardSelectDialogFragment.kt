@@ -1,5 +1,7 @@
 package com.github.mutoxu_n.idsreversiapp
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -62,6 +64,22 @@ class BoardSelectDialogFragment: DialogFragment() {
         viewModel = ViewModelProvider(this)[BoardSelectDialogViewModel::class.java]
         viewModel.configs.observe(this) { repaint() }
         viewModel.page.observe(this) { repaint() }
+
+        viewModel.dialogFlag.observe(this) { it?.let {
+            if(it) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(resources.getString(R.string.connection_failed))
+                    .setMessage(resources.getString(R.string.question_reconnect))
+                    .setPositiveButton(resources.getString(R.string.yes)) { _: DialogInterface, _: Int ->
+                        viewModel.syncConfig() }
+                    .setNegativeButton(resources.getString(R.string.finish)) {
+                            _: DialogInterface, _: Int -> dismiss()
+                    }
+                    .show()
+            }
+        }}
+
+        viewModel.syncConfig()
     }
 
     override fun onDestroy() {
@@ -74,16 +92,7 @@ class BoardSelectDialogFragment: DialogFragment() {
     private fun repaint() {
         // repaint on moving
         val grid = binding.grid
-        val config = viewModel.getConfig()
-        if(config == null){
-            if(viewModel.failedCount < 5)
-                viewModel.syncConfig()
-            else {
-                Toast.makeText(context, "Config cannot be got from server.", Toast.LENGTH_SHORT).show()
-                dismiss()
-            }
-            return
-        }
+        val config = viewModel.getConfig() ?: return
 
         // name
         binding.tvName.text = config.name

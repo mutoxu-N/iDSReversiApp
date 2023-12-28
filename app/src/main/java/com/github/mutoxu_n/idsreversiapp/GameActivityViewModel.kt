@@ -15,7 +15,8 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class GameActivityViewModel: ViewModel() {
+
+class GameActivityViewModel : ViewModel() {
     companion object {
         private const val CONNECT_TIMEOUT = 3_000
         private const val READ_TIMEOUT = 10_000
@@ -50,12 +51,15 @@ class GameActivityViewModel: ViewModel() {
     private var _finished = false
     val finished get() = _finished
 
+    private var _dialogFlag: MutableLiveData<Boolean> = MutableLiveData(false)
+    val dialogFlag: LiveData<Boolean> get() = _dialogFlag
+
     fun init(config: ReversiConfig, isBlack: Boolean) {
-        if(_config.value == null) {
+        if (_config.value == null) {
             _config.value = config
             _humanIsBlack = isBlack
             _board.value = config.board
-            if(!isBlack) putCPU()
+            if (!isBlack) putCPU()
         }
     }
 
@@ -63,23 +67,23 @@ class GameActivityViewModel: ViewModel() {
         val config = config.value ?: return
         val width = config.width
         // おけないとき
-        if(board.value!![y*width + x] != 0) return
+        if (board.value!![y * width + x] != 0) return
 
         var putFlag = false
-        val stone = if(turnIsBlack.value!!) 1 else 2
+        val stone = if (turnIsBlack.value!!) 1 else 2
         val newBoard = board.value!!.toMutableList()
 
         // flip
-        for(dir in DIRS) {
+        for (dir in DIRS) {
             val n = getReverseCount(x, y, dir)
-            if(n > 0) {
+            if (n > 0) {
                 putFlag = true
-                for(i in 0 ..n)
-                    newBoard[(y+dir[1]*i)*width + (x+dir[0]*i)] = stone
+                for (i in 0..n)
+                    newBoard[(y + dir[1] * i) * width + (x + dir[0] * i)] = stone
             }
         }
 
-        if(putFlag){
+        if (putFlag) {
             // update board and turn change
             _board.value = newBoard
             _passed = false
@@ -87,13 +91,13 @@ class GameActivityViewModel: ViewModel() {
             // check finish
             val size = width * config.height
             var finishFlag = true
-            for(i in 0 until size)
-                if(newBoard[i] == 0) {
+            for (i in 0 until size)
+                if (newBoard[i] == 0) {
                     finishFlag = false
                     break
                 }
 
-            if(finishFlag) {
+            if (finishFlag) {
                 whenGameFinished()
                 return
             }
@@ -104,21 +108,22 @@ class GameActivityViewModel: ViewModel() {
         }
     }
 
-    private fun putCPU() {
+    fun putCPU() {
         // おけないとき
-        if(!isCanPlace()){
+        if (!isCanPlace()) {
             whenCannotPlace()
             return
         }
 
-        if(_connecting) return
+        if (_connecting) return
         _connecting = true
         viewModelScope.launch {
             val name = _config.value!!.name
             val board = _board.value!!
             val width = _config.value!!.width
             val size = _config.value!!.height * width
-            val stone = if(turnIsBlack.value!!) 1 else 2
+            val stone = if (turnIsBlack.value!!) 1 else 2
+            _dialogFlag.value = false
 
             withContext(Dispatchers.IO) {
                 try {
@@ -153,13 +158,17 @@ class GameActivityViewModel: ViewModel() {
                         val resJson = JSONObject(res)
                         withContext(Dispatchers.Main) {
                             val idx = resJson.getInt("action")
-                            if(idx == size) whenCannotPlace()
-                            else put(idx%width, idx/width)
+
+                            if (idx == size) whenCannotPlace()
+                            else put(idx % width, idx / width)
                         }
                     }
 
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        _dialogFlag.value = true
+                    }
+
                 } finally {
                     _connecting = false
                 }
@@ -170,7 +179,7 @@ class GameActivityViewModel: ViewModel() {
     private fun changeTurn() {
         val newTurnIsBlack = !_turnIsBlack.value!!
         _turnIsBlack.value = newTurnIsBlack
-        if(newTurnIsBlack == !_humanIsBlack)
+        if (newTurnIsBlack == !_humanIsBlack)
             putCPU()
     }
 
@@ -181,20 +190,25 @@ class GameActivityViewModel: ViewModel() {
 
     private fun whenCannotPlace() {
         // おけなかったとき
-        if(!isCanPlace()) {
+        if (!isCanPlace()) {
             // パス
-            if(_passed) {
+            if (_passed) {
                 whenGameFinished()
                 return
             }
             _passed = true
             changeTurn()
-            Toast.makeText(App.app.applicationContext,
-                App.app.applicationContext.getString(R.string.pass), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                App.app.applicationContext,
+                App.app.applicationContext.getString(R.string.pass), Toast.LENGTH_SHORT
+            ).show()
 
         } else {
-            Toast.makeText(App.app.applicationContext,
-                App.app.applicationContext.getString(R.string.cannot_place_there), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                App.app.applicationContext,
+                App.app.applicationContext.getString(R.string.cannot_place_there),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -203,9 +217,9 @@ class GameActivityViewModel: ViewModel() {
         val width = config.width
         val size = config.height * width
 
-        for(idx in 0 until size)
-            for(dir in DIRS)
-                if(getReverseCount(idx%width, idx/width, dir) > 0)
+        for (idx in 0 until size)
+            for (dir in DIRS)
+                if (getReverseCount(idx % width, idx / width, dir) > 0)
                     return true
 
         return false
@@ -217,31 +231,33 @@ class GameActivityViewModel: ViewModel() {
         val width = config.width
         val height = config.height
         val board = board.value!!
-        val enemyStone = if(turnIsBlack.value!!) 2 else 1
+        val enemyStone = if (turnIsBlack.value!!) 2 else 1
 
         // おけないとき
-        if(board[y*width + x] != 0) return 0
+        if (board[y * width + x] != 0) return 0
 
         // search
         var tx = x + dir[0]
         var ty = y + dir[1]
         var count = 0
-        while(tx in 0 until width && ty in 0 until height
-            && board[ty*width + tx] == enemyStone) {
+        while (tx in 0 until width && ty in 0 until height
+            && board[ty * width + tx] == enemyStone
+        ) {
             count++
             tx += dir[0]
             ty += dir[1]
         }
 
-        return if(tx !in 0 until width
+        return if (tx !in 0 until width
             || ty !in 0 until height
-            || board[ty*width + tx] == 0) 0 else count
+            || board[ty * width + tx] == 0
+        ) 0 else count
     }
 
     fun countStone(stone: Int): Int {
         val board = board.value ?: return -1
         var count = 0
-        for(s in board) if(s == stone) count++
+        for (s in board) if (s == stone) count++
         return count
     }
 

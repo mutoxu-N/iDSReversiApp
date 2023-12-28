@@ -14,4 +14,9 @@
     <string name="result_stone">黒: %1$d, 白: %2$d</string>
     <string name="pass">パス!</string>
     <string name="cannot_place_there">その場所には置けません!</string>
+    <string name="connection_failed">通信失敗</string>
+    <string name="question_reconnect">再接続しますか？</string>
+    <string name="yes">はい</string>
+    <string name="finish">終了</string>
+    <string name="cpu_puts_at">CPUが%1$dに置きました</string>
 </resources>
