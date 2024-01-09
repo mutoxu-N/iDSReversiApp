@@ -69,7 +69,7 @@ class BoardSelectDialogViewModel: ViewModel() {
                             board.add(init.getInt(i))
 
                         // リストに追加
-                        list.add(ReversiConfig(name, t.getInt("width"), t.getInt("height"), board))
+                        list.add(ReversiConfig(name, t.getInt("height"), t.getInt("width"), board))
                         withContext(Dispatchers.Main) {
                             _configs.value = list
                         }
